@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=1024">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+		<title>Scenes</title>
+		<!-- <link rel="stylesheet" href="css/style.css"> -->
+
+		<style>
+			body { margin: 0; padding: 0; background-color: #222; height: 100%; overflow: hidden; }
+			#wrap { 
+				position: absolute; width: 100%; height: 100%;
+			}
+			#contents {
+				position: relative;
+				width: 100%; height: auto;
+				top : 0;
+			}
+			.scene { position: relative; width: 100%; height: 500px; text-align: center; color: #fff; text-align: center;}
+			.scene p { position: absolute; height: 100%; top: 50%; display: inline;}
+			#scene0 { background-color: #000000; top : 0%;}
+			#scene1 { background-color: #0f0ddd; top : 100%;}
+			#scene2 { background-color: #00f0f0; top : 100%;}
+			#scene3 { background-color: #ff999f; top : 100%;}
+			#scene4 { background-color: #f00000; top : 100%; display: hidden;}
+		</style>
+	
+	
+		<!-- common -->
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/jquery.easing.1.3.js"></script>
+		<script src="js/sliding.scroll.js"></script>
+		<!-- // <script src="js/jquery.mousewheel.js"></script> -->
+
+		<script>
+			$(document).ready(function(){
+				var scroll,scenes;
+				var scroll = new Scroll({
+	                target      : "#wrap",
+	                speed       : 1,
+	                friction    : 0.9,
+	                touchSpeed  : 5,
+	                type        : "wheel",
+	                stats 		: false,
+	                step        : onScroll
+	                // start       : function(){},
+	                // stop        : function(){},
+	                // touchStart  : function(){},
+	                // touchMove   : function(){},
+	                // touchEnd    : function(){}
+	            });
+
+				var contents 	= $("#contents"),
+					height 		= contents.height(),
+					top 		= 0;
+				function onScroll(p){
+					top += -p;
+					if(top > 0){
+						top += -top*0.2;
+					}
+
+					if(top < -height+stage.height){
+						top += (-height+stage.height - top)*0.2;
+					}
+
+					contents.css({top:top});
+				}
+
+				function scrollDel(){
+					scroll.stopRender();
+				}
+
+
+				var stage = WindowSize();
+				$(window).on('resize',function(){
+					stage = WindowSize();
+					console.log(stage)
+				})
+
+
+				function WindowSize(){
+			        var size = { width:0,height:0};
+			        if (document.documentElement.clientHeight) {
+			            size.width = document.documentElement.clientWidth;
+			            size.height = document.documentElement.clientHeight;
+			        } else if (document.body.clientHeight) {
+			            size.width = document.body.clientWidth;
+			            size.height = document.body.clientHeight;
+			        } else if (window.innerHeight) {
+			            size.width = window.innerWidth;
+			            size.height = window.innerHeight;
+			        }
+			        return size;
+			    }
+				// scenes.gotoAndScene(2)
+			})
+		</script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="contents">
+				<div id="scene0" class="scene"><p>Scene0</p></div>
+				<div id="scene1" class="scene"><p>Scene1</p></div>
+				<div id="scene2" class="scene"><p>Scene2</p></div>
+				<div id="scene3" class="scene"><p>Scene3</p></div>
+				<div id="scene4" class="scene"><p>END</p></div>
+			</div>
+		</div>
+	</body>
+</html>
